@@ -1,21 +1,51 @@
-import {Dimensions, Image, StyleSheet, Text, View} from 'react-native';
 import React from 'react';
+import {
+  Alert,
+  Dimensions,
+  Image,
+  Modal,
+  Pressable,
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
+import Video from 'react-native-video';
 
 const height = Dimensions.get('screen').height;
 const width = Dimensions.get('screen').width;
 
 const App = () => {
+  const [modalVisible, setModalVisible] = React.useState(false);
+
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <Text style={styles.text}>
         İnsanlar birbirlerine yara bandı olabilecekken yara oluyor..
       </Text>
-      <Image
-        source={require('./assets/images/yara-bandi.png')}
-        style={styles.image}
-        resizeMode="cover"
-      />
-    </View>
+      <TouchableOpacity onPress={() => setModalVisible(!modalVisible)}>
+        <Image
+          source={require('./assets/images/yara-bandi.png')}
+          style={styles.image}
+          resizeMode="cover"
+        />
+      </TouchableOpacity>
+      <Modal animationType="slide" transparent visible={modalVisible}>
+        <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+          <Pressable
+            style={styles.modalView}
+            onPress={() => setModalVisible(!modalVisible)}>
+            <Video
+              repeat
+              resizeMode="stretch"
+              style={{flex: 1, borderRadius: 50}}
+              source={require('./assets/videos/motivationVideo.mp4')}
+            />
+          </Pressable>
+        </View>
+      </Modal>
+    </SafeAreaView>
   );
 };
 
@@ -38,5 +68,11 @@ const styles = StyleSheet.create({
   image: {
     width: width / 1.2,
     height: height / 4,
+  },
+  modalView: {
+    borderRadius: 50,
+    width: width / 1.2,
+    height: height / 1.5,
+    backgroundColor: 'white',
   },
 });
